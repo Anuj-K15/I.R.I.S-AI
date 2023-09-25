@@ -1,37 +1,50 @@
 import speech_recognition as sr
 import os
 import win32com.client
-from speech_recognition import Recognizer
 
-#speaker = win32com.client.Dispatch("SAPI.SpVoice")
+speaker = win32com.client.Dispatch("SAPI.SpVoice")
 
-# s = 1
-# while (s == 1):
-#
-#     s = "Hello I am JARVIS AI"
-#     print(s)
-#     speaker.Speak(s)
-def say(text):
-    os.system(f"say{text}")
+s = 1
+p = 1
+c = 1
 
-def takeCommand():
-    r = sr.Recognizer()
-    with sr.Microphone() as source:
-        r.pause_threshold = 1
-        audio = r.listen(source)
-        query = r.recognize_google(audio, language="en-in")
-        print(f"user Said: {query}")
-        return query
-if __name__ == '__main__':
-    print('PyCharm')
-    say('Hello i am Jarvis A.I')
-    print("Listening...")
-    text = takeCommand()
-    say(text)
+while (s == 1) & (p == 1) & (c == 1):
+
+    s = "Hello I am JARVIS AI"
+    p = "Hey! Master"
+    c = "Ask me Something"
+    print(s)
+    speaker.Speak(s)
+    print(p)
+    speaker.Speak(p)
+    print(c)
+    speaker.Speak(c)
+
+    def say(text):
+        os.system(f"say{text}")
+    def takeCommand():
+        r = sr.Recognizer()
+        with sr.Microphone() as source:
+            print("Listening...")
+            r.pause_threshold = 1
+            audio = r.listen(source)
+
+        try:
+            print("Recognizing...")
+            query = r.recognize_google(audio, language="en-in")
+            print(f"User Said: {query}")
+            return query
+        except sr.UnknownValueError:
+            print("Sorry, I didn't understand what you said.")
+            return ""
+        except sr.RequestError as e:
+            print(f"Sorry, there was an error connecting to the Google API: {e}")
+            return ""
 
 
-
-
-
-
+    if __name__ == '__main__':
+        while True:
+            print("Listening..")
+            text = takeCommand()
+           
 
